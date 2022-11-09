@@ -23,7 +23,7 @@ function run() {
 
     try {
         const FoodCollection = client.db('foodbar').collection('food')
-        const reviewcollection = client.db('user-review').collection('review')
+        const reviewcollection = client.db('revieitem').collection('review')
 
 
         app.get('/home', async (req, res) => {
@@ -40,7 +40,7 @@ function run() {
         })
         app.post('/service', async (req, res) => {
             const query = req.body;
-            console.log(query)
+
             const result = await FoodCollection.insertOne(query)
             res.send(result)
         })
@@ -51,14 +51,25 @@ function run() {
             res.send(service)
         })
         app.post('/users', async (req, res) => {
-            const query = req.body;
-            console.log(query)
+            const query = req.body
             const result = await reviewcollection.insertOne(query)
             res.send(result)
         })
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+
+            const query = { categori: id }
+            const cursor = await reviewcollection.find(query).toArray()
+            res.send(cursor)
+
+        })
         app.get('/users', async (req, res) => {
-            const query = {}
-            console.log(query)
+            let query = {}
+            if (req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
             const cursor = reviewcollection.find(query)
             const review = await cursor.toArray()
             res.send(review)
