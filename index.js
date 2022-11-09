@@ -38,6 +38,12 @@ function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+        app.post('/service', async (req, res) => {
+            const query = req.body;
+            console.log(query)
+            const result = await FoodCollection.insertOne(query)
+            res.send(result)
+        })
         app.get('/service/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) }
