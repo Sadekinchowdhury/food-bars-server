@@ -29,7 +29,8 @@ function run() {
         app.get('/home', async (req, res) => {
             const query = {}
             const cursor = FoodCollection.find(query)
-            const result = await cursor.limit(3).toArray()
+
+            const result = await cursor.sort({ _id: -1 }).limit(3).toArray()
             res.send(result)
         })
         app.get('/service', async (req, res) => {
