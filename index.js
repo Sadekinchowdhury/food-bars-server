@@ -96,14 +96,29 @@ function run() {
         })
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(id)
-            console.log(id)
+
             const query = { _id: ObjectId(id) }
             const result = await reviewcollection.deleteOne(query)
 
             res.send(result)
 
         })
+        app.patch('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const status = req.body.status;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    status: status
+                }
+            }
+            const result = await reviewcollection.updateOne(query, updateDoc);
+            res.send(result)
+        })
+
+
+
+
         app.get('/users', verifyJWT, async (req, res) => {
             const decoded = req.decoded;
 
